@@ -23,7 +23,7 @@ SpatialDeformationMCMC <- function(
       C0 = diag(1000, nrow(FT)),
       S0 = diag(0.01, nrow(response)),
       n0 = 1,
-      n0est = n0 + nrow(data),
+      n0est = n0 + nrow(response),
       asigmad = 10002,
       bsigmad = 10001,
       asigmala = 0.01,
