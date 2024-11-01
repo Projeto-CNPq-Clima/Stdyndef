@@ -15,6 +15,7 @@
 #' @export
 #'
 #'
+
 SpatialDeformationMCMC <- function(
     response, FT, MatFFT, GT, sites, GAMA,
     prior = list(
@@ -23,7 +24,6 @@ SpatialDeformationMCMC <- function(
       C0 = diag(1000, nrow(FT)),
       S0 = diag(0.01, nrow(response)),
       n0 = 1,
-      n0est = n0 + nrow(response),
       asigmad = 10002,
       bsigmad = 10001,
       asigmala = 0.01,
@@ -44,7 +44,7 @@ SpatialDeformationMCMC <- function(
   C0 <- prior$ C0
   S0 <- prior$S0
   n0 <- prior$n0
-  n0est <- prior$n0est
+  n0est <- n0 + nrow(response)
   asigmad <- prior$asigmad
   bsigmad <- prior$bsigmad
   asigmala <- prior$asigmala
@@ -56,7 +56,7 @@ SpatialDeformationMCMC <- function(
   aaphi <- prior$aaphi
   bbphi <- prior$bbphi
   u1phi <- prior$u1phi
-###
+  ###
 
   qq <- nrow(GAMA)
   Phis <- rep(0.51, qq)
