@@ -16,13 +16,14 @@
 #'
 #'
 
+
 SpatialDeformationMCMC <- function(
     response, FT, MatFFT, GT, sites, GAMA,
     prior = list(
       m0 = as.matrix(rep(0, nrow(FT))),
       mvarphi = 1 / 18,
       C0 = diag(1000, nrow(FT)),
-      S0 = diag(0.01, nrow(response)),
+      S0 = diag(0.01, ncol(GT)),
       n0 = 1,
       asigmad = 10002,
       bsigmad = 10001,

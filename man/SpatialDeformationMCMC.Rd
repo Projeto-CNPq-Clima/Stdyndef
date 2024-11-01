@@ -12,7 +12,7 @@ SpatialDeformationMCMC(
   sites,
   GAMA,
   prior = list(m0 = as.matrix(rep(0, nrow(FT))), mvarphi = 1/18, C0 = diag(1000,
-    nrow(FT)), S0 = diag(0.01, nrow(response)), n0 = 1, asigmad = 10002, bsigmad = 10001,
+    nrow(FT)), S0 = diag(0.01, ncol(GT)), n0 = 1, asigmad = 10002, bsigmad = 10001,
     asigmala = 0.01, bsigmala = 0.01, aepsilon = rep(0.01, nrow(GAMA)), axi = rep(0.01,
     nrow(GAMA)), bepsilon = rep(0.01, nrow(GAMA)), bxi = rep(0.01, nrow(GAMA)), aaphi =
     rep(0.01, nrow(GAMA)), bbphi = rep(0.01, nrow(GAMA)), u1phi = rep(500, nrow(GAMA))),
