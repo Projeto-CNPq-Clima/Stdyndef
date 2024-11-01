@@ -35,10 +35,9 @@ SpatialDeformationMCMC <- function(
       bxi = rep(0.01, nrow(GAMA)),
       aaphi = rep(0.01, nrow(GAMA)),
       bbphi = rep(0.01, nrow(GAMA)),
-      u1phi = rep(500, nrow(GAMA))), iteration, burnin, jump) {
-
-
-  #hiperparametros da lista prior
+      u1phi = rep(500, nrow(GAMA))
+    ), iteration, burnin, jump) {
+  # hiperparametros da lista prior
 
   m0 <- prior$m0
   mvarphi <- prior$mvarphi
@@ -397,37 +396,41 @@ SpatialDeformationMCMC <- function(
     print(j)
   }
 
-  resultss<-list(MDef,
-                 MDefT,
-                 MDef1T,
-                 MTheta,
-                 MTheta0,
-                 Mlambda,
-                 MPsi,
-                 Msigmak,
-                 Mkappa,
-                 MkappaT,
-                 MkappaT1,
-                 MPhi,
-                 MPhiT,
-                 MPhiT1,
-                 Mvarphi)
+  resultss <- list(
+    MDef,
+    MDefT,
+    MDef1T,
+    MTheta,
+    MTheta0,
+    Mlambda,
+    MPsi,
+    Msigmak,
+    Mkappa,
+    MkappaT,
+    MkappaT1,
+    MPhi,
+    MPhiT,
+    MPhiT1,
+    Mvarphi
+  )
 
-  names(resultss)<-c("MDef",
-                     "MDefT",
-                     "MDef1T",
-                     "MTheta",
-                     "MTheta0",
-                     "Mlambda",
-                     "MPsi",
-                     "Msigmak",
-                     "Mkappa",
-                     "MkappaT",
-                     "MkappaT1",
-                     "MPhi",
-                     "MPhiT",
-                     "MPhiT1",
-                     "Mvarphi")
+  names(resultss) <- c(
+    "MDef",
+    "MDefT",
+    "MDef1T",
+    "MTheta",
+    "MTheta0",
+    "Mlambda",
+    "MPsi",
+    "Msigmak",
+    "Mkappa",
+    "MkappaT",
+    "MkappaT1",
+    "MPhi",
+    "MPhiT",
+    "MPhiT1",
+    "Mvarphi"
+  )
 
   return(resultss)
 }
