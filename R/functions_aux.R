@@ -338,3 +338,34 @@ amostrarphi <- function(MFFT, yTT, TTheta, kkappa, ssigma, PPhi, MDEF, aa1, bb1,
   res <- list(bprox, rejei)
   res
 }
+
+
+
+# Define the logNor function
+logNor <- function(MFFT, yTT, TTheta, kkappa, ssigma, PPhi, MDEF) {
+  INN <- diag(1, ncol(yTT))
+  ddeff <- matrix(MDEF, ncol(yTT), 2)
+  SSS <- ssigma * ((1 - kkappa) * gCorr(PPhi, ddeff) + kkappa * INN)
+
+  matres <- NULL
+  for (j in 1:nrow(MFFT)) {
+    mmm <- t(matrix(MFFT[j, ], ncol(TTheta), ncol(yTT))) %*% as.matrix(TTheta[j, ])
+    matres <- c(matres, dmvnorm(yTT[j, ], mean = mmm, sigma = SSS, log = TRUE))
+  }
+
+  sum(matres)
+}
+
+# Define the logvero function
+logvero <- function(MatT, Response, TTheta, kkappa, ssigma, PPhi, MDEF, IND) {
+  tempsoma <- 0
+
+  for (j in 1:nrow(IND)) {
+    tempsoma <- tempsoma + logNor(MatT[IND[j, ], ], Response[IND[j, ], ], TTheta[IND[j, ], ],
+                                  kkappa[j], ssigma[j], PPhi[j], MDEF[j, ])
+  }
+
+  tempsoma
+}
+
+

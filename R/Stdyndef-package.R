@@ -3,6 +3,7 @@
 
 ## usethis namespace: start
 #' @importFrom MASS mvrnorm
+#' @importFrom mvtnorm dmvnorm
 #' @importFrom stats dbeta
 #' @importFrom stats dgamma
 #' @importFrom stats dist
