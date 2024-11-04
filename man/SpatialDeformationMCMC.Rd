@@ -14,7 +14,7 @@ SpatialDeformationMCMC(
   prior = list(m0 = as.matrix(rep(0, nrow(FT))), C0 = diag(1000, nrow(FT)), S0 =
     diag(0.01, ncol(GT)), n0 = 1, aepsilon = rep(0.01, nrow(GAMA)), axi = rep(0.01,
     nrow(GAMA)), bepsilon = rep(0.01, nrow(GAMA)), bxi = rep(0.01, nrow(GAMA)), aaphi =
-    rep(0.01, nrow(GAMA)), bbphi = rep(0.01, nrow(GAMA))),
+    rep(0.01, nrow(GAMA)), bbphi = rep(0.01, nrow(GAMA)), sigmadd = 0.51, sigmal = 0.41),
   iteration,
   burnin,
   jump

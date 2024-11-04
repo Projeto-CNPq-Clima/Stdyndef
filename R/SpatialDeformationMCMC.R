@@ -58,7 +58,9 @@ SpatialDeformationMCMC <- function(
       bepsilon = rep(0.01, nrow(GAMA)),
       bxi = rep(0.01, nrow(GAMA)),
       aaphi = rep(0.01, nrow(GAMA)),
-      bbphi = rep(0.01, nrow(GAMA))
+      bbphi = rep(0.01, nrow(GAMA)),
+      sigmadd = 0.51,
+      sigmal = 0.41
     ), iteration, burnin, jump) {
   # hiperparametros da lista prior
 
@@ -79,6 +81,8 @@ SpatialDeformationMCMC <- function(
   aaphi <- prior$aaphi
   bbphi <- prior$bbphi
   u1phi <- rep(500, nrow(GAMA))
+  sigmadd <- prior$sigmadd
+  sigmal <- prior$sigmal
   ###
 
   qq <- nrow(GAMA)
@@ -86,8 +90,6 @@ SpatialDeformationMCMC <- function(
   sigmas <- rep(0.51, qq)
   kappas <- rep(0.51, qq)
   varphi <- 0.51
-  sigmadd <- 0.51
-  sigmal <- 0.41
   lambdas <- matrix(0.000, qq, ncol(response) * 2)
 
   # Valores computacionais
@@ -431,7 +433,8 @@ SpatialDeformationMCMC <- function(
     MkappaT1,
     MPhi,
     MPhiT1,
-    Mvarphi
+    Mvarphi,
+    bd
   )
 
   names(resultss) <- c(
@@ -446,7 +449,8 @@ SpatialDeformationMCMC <- function(
     "MkappaT1",
     "MPhi",
     "MPhiT1",
-    "Mvarphi"
+    "Mvarphi",
+    "bd"
   )
 
   return(resultss)

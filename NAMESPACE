@@ -2,6 +2,7 @@
 
 export(DIC)
 export(SpatialDeformationMCMC)
+export(compute_Mmd)
 importFrom(MASS,mvrnorm)
 importFrom(mvtnorm,dmvnorm)
 importFrom(stats,dbeta)
