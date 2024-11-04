@@ -2,7 +2,7 @@
 % Please edit documentation in R/SpatialDeformationMCMC.R
 \name{SpatialDeformationMCMC}
 \alias{SpatialDeformationMCMC}
-\title{Title}
+\title{Fitting Spatiotemporal Model with Dynamic Deformation for Nonstationary Covariance Structures}
 \usage{
 SpatialDeformationMCMC(
   response,
@@ -11,30 +11,35 @@ SpatialDeformationMCMC(
   GT,
   sites,
   GAMA,
-  prior = list(m0 = as.matrix(rep(0, nrow(FT))), mvarphi = 1/18, C0 = diag(1000,
-    nrow(FT)), S0 = diag(0.01, ncol(GT)), n0 = 1, asigmad = 10002, bsigmad = 10001,
-    asigmala = 0.01, bsigmala = 0.01, aepsilon = rep(0.01, nrow(GAMA)), axi = rep(0.01,
+  prior = list(m0 = as.matrix(rep(0, nrow(FT))), C0 = diag(1000, nrow(FT)), S0 =
+    diag(0.01, ncol(GT)), n0 = 1, aepsilon = rep(0.01, nrow(GAMA)), axi = rep(0.01,
     nrow(GAMA)), bepsilon = rep(0.01, nrow(GAMA)), bxi = rep(0.01, nrow(GAMA)), aaphi =
-    rep(0.01, nrow(GAMA)), bbphi = rep(0.01, nrow(GAMA)), u1phi = rep(500, nrow(GAMA))),
+    rep(0.01, nrow(GAMA)), bbphi = rep(0.01, nrow(GAMA))),
   iteration,
   burnin,
   jump
 )
 }
 \arguments{
-\item{response}{a value}
+\item{response}{A matrix of observed values for the response variable, with dimensions \code{Txn}, where \code{T} is the length of the time series and \code{n} is the number of locations.}
 
-\item{FT}{a value}
+\item{FT}{A covariate matrix with dimensions \code{pxn}, where \code{p} is the number of coefficients and \code{n} is the number of locations for time \code{t = 1}.}
 
-\item{MatFFT}{a value}
+\item{MatFFT}{A covariate matrix with dimensions \code{Tx(pxn)}. Each row contains the vectorized elements of the \code{FT} matrix for each time \code{t}.}
 
-\item{GT}{a value}
+\item{GT}{An evolution matrix with dimensions \code{pxp}.}
 
-\item{sites}{a value}
+\item{sites}{A matrix \code{nx2} containing the geographic coordinates of the locations.}
 
-\item{GAMA}{a value}
+\item{GAMA}{A matrix with dimensions \code{qxr} such that \code{q * r = T}. Each row contains the positions of the set \verb{AT = \{1, ..., T\}}, defining the subset \code{GAMA_i = AT[GAMA[i,]]} for \verb{i = 1, ..., q}. The \code{GAMA} matrix must guarantee a partition of \code{AT}, meaning that \verb{GAMA_i ∩ GAMA_j} is empty for all \verb{i ≠ j}, and the union of all \code{GAMA_i} equals \code{AT}.}
 
-\item{prior}{a value}
+\item{prior}{A list containing the hyperparameters for the prior distributions of the model parameters:
+\itemize{
+\item \code{theta_0 ~ N(m0, C0)}, with defaults \code{m0 = 0} and \code{C0 = diag(1000)}.
+\item \code{Psi ~ Inverse-Wishart(S0, n0)}, with defaults \code{S0 = diag(0.01)} and \code{n0 = 1}.
+\item \verb{sigma_\{k\}^2 | pi_\{k\} ~ Inv-Gamma(axi + bxi, bepsilon / (1 - pi_k) + aepsilon / pi_k)}, with defaults \code{aepsilon = bepsilon = axi = bxi = 0.001}.
+\item \code{phi ~ Inv-Gamma(aaphi, bbphi)}, with defaults \code{aaphi = bbphi = 0.001}.
+}}
 
 \item{iteration}{a value}
 
@@ -43,8 +48,31 @@ SpatialDeformationMCMC(
 \item{jump}{a value}
 }
 \value{
-a matrix
+A list containing the following adjusted parameters from the MCMC fitting procedure:
+
+\describe{
+\item{MDef}{A matrix of dimensions \verb{((iteration-burnin)/jump) x (n x 2 x q)}. This matrix stores the deformation samples generated during the MCMC procedure. Each row contains the vectorized deformation values for the i-th iteration.}
+\item{MDef1T}{A binary vector indicating acceptance (1) or rejection (0) of the \code{d} parameter proposals in the Metropolis-Hastings step.}
+\item{MTheta}{A matrix of dimensions \verb{((iteration-burnin)/jump) x (T x p)}. Each row contains a vectorized sample of the posterior distribution for \code{Theta} at the i-th iteration.}
+\item{MTheta0}{A matrix of dimensions \verb{((iteration-burnin)/jump) x p}. Each row holds a vectorized sample of the posterior distribution for \code{Theta0} from the i-th iteration.}
+\item{Mlambda}{A matrix of dimensions \verb{((iteration-burnin)/jump) x (n x 2 x q)}. This matrix stores the samples of \code{Z} values generated in the MCMC procedure, with each row representing the vectorized values of \code{Z} for each iteration.}
+\item{MPsi}{A matrix of dimensions \verb{((iteration-burnin)/jump) x (p x p)}. This matrix contains the vectorized posterior samples of \code{Psi} for each MCMC iteration.}
+\item{Msigmak}{A matrix of dimensions \verb{((iteration-burnin)/jump) x q}. This matrix contains the posterior samples of \code{sigmak} for each iteration, where each row represents values for the i-th iteration.}
+\item{Mkappa}{A matrix of dimensions \verb{((iteration-burnin)/jump) x q}. This matrix contains the posterior samples of \code{kappa} values generated in the MCMC procedure, with each row representing the i-th iteration.}
+\item{MPhi}{A matrix of dimensions \verb{((iteration-burnin)/jump) x q}. This matrix stores the posterior samples of \code{phi} values generated during the MCMC procedure. Each row corresponds to an iteration.}
+\item{MkappaT1}{A binary matrix of dimensions \verb{((iteration-burnin)/jump) x q} indicating acceptance (1) or rejection (0) of the proposals for \code{kappa} parameters in the Metropolis-Hastings step.}
+\item{MPhiT1}{A binary matrix of dimensions \verb{((iteration-burnin)/jump) x q} indicating acceptance (1) or rejection (0) of the proposals for \code{phi} parameters in the Metropolis-Hastings step.}
+\item{Mvarphi}{A vector of posterior samples for the \code{varphi} parameter obtained during the MCMC procedure.}
+}
 }
 \description{
-Title
+\code{SpatialDeformationMCMC} adjusts the parameters of a spatiotemporal model with dynamic deformation using MCMC sampling.
+}
+\details{
+This function performs MCMC sampling to fit a nonstationary spatiotemporal model with dynamic deformation, allowing for complex covariance structures in spatiotemporal data.
+}
+\examples{
+# Example usage:
+# Model fitting with simulated data
+# result <- SpatialDeformationMCMC(Response, FT, MatFFT, GT, Sites, GAMA, prior)
 }

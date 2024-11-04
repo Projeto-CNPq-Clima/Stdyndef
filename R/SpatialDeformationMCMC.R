@@ -1,46 +1,69 @@
-#' Title
+#' Fitting Spatiotemporal Model with Dynamic Deformation for Nonstationary Covariance Structures
 #'
-#' @param response a value
-#' @param sites a value
-#' @param prior a value
-#' @param burnin a value
-#' @param FT a value
-#' @param MatFFT a value
-#' @param GT a value
-#' @param GAMA a value
+#' `SpatialDeformationMCMC` adjusts the parameters of a spatiotemporal model with dynamic deformation using MCMC sampling.
+#'
+#' @param response A matrix of observed values for the response variable, with dimensions `Txn`, where `T` is the length of the time series and `n` is the number of locations.
+#' @param FT A covariate matrix with dimensions `pxn`, where `p` is the number of coefficients and `n` is the number of locations for time `t = 1`.
+#' @param MatFFT A covariate matrix with dimensions `Tx(pxn)`. Each row contains the vectorized elements of the `FT` matrix for each time `t`.
+#' @param GT An evolution matrix with dimensions `pxp`.
+#' @param sites A matrix `nx2` containing the geographic coordinates of the locations.
+#' @param GAMA A matrix with dimensions `qxr` such that `q * r = T`. Each row contains the positions of the set `AT = {1, ..., T}`, defining the subset `GAMA_i = AT[GAMA[i,]]` for `i = 1, ..., q`. The `GAMA` matrix must guarantee a partition of `AT`, meaning that `GAMA_i ∩ GAMA_j` is empty for all `i ≠ j`, and the union of all `GAMA_i` equals `AT`.
+#' @param prior A list containing the hyperparameters for the prior distributions of the model parameters:
+#'   * `theta_0 ~ N(m0, C0)`, with defaults `m0 = 0` and `C0 = diag(1000)`.
+#'   * `Psi ~ Inverse-Wishart(S0, n0)`, with defaults `S0 = diag(0.01)` and `n0 = 1`.
+#'   * `sigma_{k}^2 | pi_{k} ~ Inv-Gamma(axi + bxi, bepsilon / (1 - pi_k) + aepsilon / pi_k)`, with defaults `aepsilon = bepsilon = axi = bxi = 0.001`.
+#'   * `phi ~ Inv-Gamma(aaphi, bbphi)`, with defaults `aaphi = bbphi = 0.001`.
 #' @param iteration a value
+#' @param burnin a value
 #' @param jump a value
 #'
-#' @return a matrix
+#' @return A list containing the following adjusted parameters from the MCMC fitting procedure:
+#'
+#' \describe{
+#'   \item{MDef}{A matrix of dimensions `((iteration-burnin)/jump) x (n x 2 x q)`. This matrix stores the deformation samples generated during the MCMC procedure. Each row contains the vectorized deformation values for the i-th iteration.}
+#'   \item{MDef1T}{A binary vector indicating acceptance (1) or rejection (0) of the `d` parameter proposals in the Metropolis-Hastings step.}
+#'   \item{MTheta}{A matrix of dimensions `((iteration-burnin)/jump) x (T x p)`. Each row contains a vectorized sample of the posterior distribution for `Theta` at the i-th iteration.}
+#'   \item{MTheta0}{A matrix of dimensions `((iteration-burnin)/jump) x p`. Each row holds a vectorized sample of the posterior distribution for `Theta0` from the i-th iteration.}
+#'   \item{Mlambda}{A matrix of dimensions `((iteration-burnin)/jump) x (n x 2 x q)`. This matrix stores the samples of `Z` values generated in the MCMC procedure, with each row representing the vectorized values of `Z` for each iteration.}
+#'   \item{MPsi}{A matrix of dimensions `((iteration-burnin)/jump) x (p x p)`. This matrix contains the vectorized posterior samples of `Psi` for each MCMC iteration.}
+#'   \item{Msigmak}{A matrix of dimensions `((iteration-burnin)/jump) x q`. This matrix contains the posterior samples of `sigmak` for each iteration, where each row represents values for the i-th iteration.}
+#'   \item{Mkappa}{A matrix of dimensions `((iteration-burnin)/jump) x q`. This matrix contains the posterior samples of `kappa` values generated in the MCMC procedure, with each row representing the i-th iteration.}
+#'   \item{MPhi}{A matrix of dimensions `((iteration-burnin)/jump) x q`. This matrix stores the posterior samples of `phi` values generated during the MCMC procedure. Each row corresponds to an iteration.}
+#'   \item{MkappaT1}{A binary matrix of dimensions `((iteration-burnin)/jump) x q` indicating acceptance (1) or rejection (0) of the proposals for `kappa` parameters in the Metropolis-Hastings step.}
+#'   \item{MPhiT1}{A binary matrix of dimensions `((iteration-burnin)/jump) x q` indicating acceptance (1) or rejection (0) of the proposals for `phi` parameters in the Metropolis-Hastings step.}
+#'   \item{Mvarphi}{A vector of posterior samples for the `varphi` parameter obtained during the MCMC procedure.}
+#' }
+#'
+#' @details This function performs MCMC sampling to fit a nonstationary spatiotemporal model with dynamic deformation, allowing for complex covariance structures in spatiotemporal data.
+#'
+#' @examples
+#' # Example usage:
+#' # Model fitting with simulated data
+#' # result <- SpatialDeformationMCMC(Response, FT, MatFFT, GT, Sites, GAMA, prior)
 #' @export
-#'
-#'
+
+
+
 
 
 SpatialDeformationMCMC <- function(
     response, FT, MatFFT, GT, sites, GAMA,
     prior = list(
       m0 = as.matrix(rep(0, nrow(FT))),
-      mvarphi = 1 / 18,
       C0 = diag(1000, nrow(FT)),
       S0 = diag(0.01, ncol(GT)),
       n0 = 1,
-      asigmad = 10002,
-      bsigmad = 10001,
-      asigmala = 0.01,
-      bsigmala = 0.01,
       aepsilon = rep(0.01, nrow(GAMA)),
       axi = rep(0.01, nrow(GAMA)),
       bepsilon = rep(0.01, nrow(GAMA)),
       bxi = rep(0.01, nrow(GAMA)),
       aaphi = rep(0.01, nrow(GAMA)),
-      bbphi = rep(0.01, nrow(GAMA)),
-      u1phi = rep(500, nrow(GAMA))
+      bbphi = rep(0.01, nrow(GAMA))
     ), iteration, burnin, jump) {
   # hiperparametros da lista prior
 
   m0 <- prior$m0
-  mvarphi <- prior$mvarphi
+  mvarphi <- 1 / 18
   C0 <- prior$ C0
   S0 <- prior$S0
   n0 <- prior$n0
@@ -55,7 +78,7 @@ SpatialDeformationMCMC <- function(
   bxi <- prior$bxi
   aaphi <- prior$aaphi
   bbphi <- prior$bbphi
-  u1phi <- prior$u1phi
+  u1phi <- rep(500, nrow(GAMA))
   ###
 
   qq <- nrow(GAMA)
@@ -398,7 +421,6 @@ SpatialDeformationMCMC <- function(
 
   resultss <- list(
     MDef,
-    MDefT,
     MDef1T,
     MTheta,
     MTheta0,
@@ -406,17 +428,14 @@ SpatialDeformationMCMC <- function(
     MPsi,
     Msigmak,
     Mkappa,
-    MkappaT,
     MkappaT1,
     MPhi,
-    MPhiT,
     MPhiT1,
     Mvarphi
   )
 
   names(resultss) <- c(
     "MDef",
-    "MDefT",
     "MDef1T",
     "MTheta",
     "MTheta0",
@@ -424,10 +443,8 @@ SpatialDeformationMCMC <- function(
     "MPsi",
     "Msigmak",
     "Mkappa",
-    "MkappaT",
     "MkappaT1",
     "MPhi",
-    "MPhiT",
     "MPhiT1",
     "Mvarphi"
   )
