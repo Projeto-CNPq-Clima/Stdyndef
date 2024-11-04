@@ -9,17 +9,17 @@ DIC(output, response, FT, MatFFT, GT, sites, GAMA)
 \arguments{
 \item{output}{a value}
 
-\item{response}{a value}
+\item{response}{A matrix of observed values for the response variable, with dimensions \code{Txn}, where \code{T} is the length of the time series and \code{n} is the number of locations.}
 
-\item{FT}{a value}
+\item{FT}{A covariate matrix with dimensions \code{pxn}, where \code{p} is the number of coefficients and \code{n} is the number of locations for time \code{t = 1}.}
 
-\item{MatFFT}{a value}
+\item{MatFFT}{A covariate matrix with dimensions \code{Tx(pxn)}. Each row contains the vectorized elements of the \code{FT} matrix for each time \code{t}.}
 
-\item{GT}{a value}
+\item{GT}{An evolution matrix with dimensions \code{pxp}.}
 
-\item{sites}{a value}
+\item{sites}{A matrix \code{nx2} containing the geographic coordinates of the locations.}
 
-\item{GAMA}{a value}
+\item{GAMA}{A matrix with dimensions \code{qxr} such that \code{q * r = T}. Each row contains the positions of the set \verb{AT = \{1, ..., T\}}, defining the subset \code{GAMA_i = AT[GAMA[i,]]} for \verb{i = 1, ..., q}. The \code{GAMA} matrix must guarantee a partition of \code{AT}, meaning that \verb{GAMA_i ∩ GAMA_j} is empty for all \verb{i ≠ j}, and the union of all \code{GAMA_i} equals \code{AT}.}
 }
 \description{
 Title

@@ -1,12 +1,12 @@
 #' Title
 #'
 #' @param output a value
-#' @param response a value
-#' @param FT a value
-#' @param MatFFT a value
-#' @param GT a value
-#' @param sites a value
-#' @param GAMA a value
+#' @param response A matrix of observed values for the response variable, with dimensions `Txn`, where `T` is the length of the time series and `n` is the number of locations.
+#' @param FT A covariate matrix with dimensions `pxn`, where `p` is the number of coefficients and `n` is the number of locations for time `t = 1`.
+#' @param MatFFT A covariate matrix with dimensions `Tx(pxn)`. Each row contains the vectorized elements of the `FT` matrix for each time `t`.
+#' @param GT An evolution matrix with dimensions `pxp`.
+#' @param sites A matrix `nx2` containing the geographic coordinates of the locations.
+#' @param GAMA A matrix with dimensions `qxr` such that `q * r = T`. Each row contains the positions of the set `AT = {1, ..., T}`, defining the subset `GAMA_i = AT[GAMA[i,]]` for `i = 1, ..., q`. The `GAMA` matrix must guarantee a partition of `AT`, meaning that `GAMA_i ∩ GAMA_j` is empty for all `i ≠ j`, and the union of all `GAMA_i` equals `AT`.
 #'
 #' @return
 #' @export
