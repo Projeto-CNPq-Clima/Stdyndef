@@ -37,15 +37,15 @@ summary_stdyndef <- function(MCMC_output) {
   k_values <- 1:ncol(Msigmak)
   summary_table <- data.frame(
     k = k_values,
-    `sigmak_mean` = sigmak_summary$mean,
-    `sigmak_2.5%` = sigmak_summary$`2.5%`,
-    `sigmak_97.5%` = sigmak_summary$`97.5%`,
-    `phik_mean` = phik_summary$mean,
-    `phik_2.5%` = phik_summary$`2.5%`,
-    `phik_97.5%` = phik_summary$`97.5%`,
-    `pik_mean` = pik_summary$mean,
-    `pik_2.5%` = pik_summary$`2.5%`,
-    `pik_97.5%` = pik_summary$`97.5%`
+    `sigmak_mean` = sigmak_summary[,1],
+    `sigmak_2.5%` = sigmak_summary[,2],
+    `sigmak_97.5%` = sigmak_summary[,3],
+    `phik_mean` = phik_summary[,1],
+    `phik_2.5%` = phik_summary[,2],
+    `phik_97.5%` = phik_summary[,3],
+    `pik_mean` = pik_summary[,1],
+    `pik_2.5%` = pik_summary[,2],
+    `pik_97.5%` = pik_summary[,3]
   )
 
   return(summary_table)
