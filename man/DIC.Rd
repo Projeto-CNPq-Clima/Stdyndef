@@ -21,6 +21,9 @@ DIC(output, response, FT, MatFFT, GT, sites, GAMA)
 
 \item{GAMA}{A matrix with dimensions \code{qxr} such that \code{q * r = T}. Each row contains the positions of the set \verb{AT = \{1, ..., T\}}, defining the subset \code{GAMA_i = AT[GAMA[i,]]} for \verb{i = 1, ..., q}. The \code{GAMA} matrix must guarantee a partition of \code{AT}, meaning that \verb{GAMA_i ∩ GAMA_j} is empty for all \verb{i ≠ j}, and the union of all \code{GAMA_i} equals \code{AT}.}
 }
+\value{
+a value
+}
 \description{
 Title
 }
