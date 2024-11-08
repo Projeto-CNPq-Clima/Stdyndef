@@ -8,10 +8,9 @@
 #' @param sites A matrix `nx2` containing the geographic coordinates of the locations.
 #' @param GAMA A matrix with dimensions `qxr` such that `q * r = T`. Each row contains the positions of the set `AT = {1, ..., T}`, defining the subset `GAMA_i = AT[GAMA[i,]]` for `i = 1, ..., q`. The `GAMA` matrix must guarantee a partition of `AT`, meaning that `GAMA_i ∩ GAMA_j` is empty for all `i ≠ j`, and the union of all `GAMA_i` equals `AT`.
 #'
-#' @return
+#' @return a value
 #' @export
 #'
-#' @examples
 #'
 DIC <- function(output, response, FT, MatFFT, GT, sites, GAMA) {
   # Extract parameters from the MCMC output

@@ -421,21 +421,20 @@ SpatialDeformationMCMC <- function(
     print(j)
   }
 
-  resultss <- list(
-    MDef,
-    MDef1T,
-    MTheta,
-    MTheta0,
-    Mlambda,
-    MPsi,
-    Msigmak,
-    Mkappa,
-    MkappaT1,
-    MPhi,
-    MPhiT1,
-    Mvarphi,
-    bd
-  )
+  resultss <- list(MDef,
+                               MDef1T,
+                               MTheta,
+                               MTheta0,
+                               Mlambda,
+                               MPsi,
+                               Msigmak,
+                               Mkappa,
+                               MkappaT1,
+                               MPhi,
+                               MPhiT1,
+                               Mvarphi,
+                               bd)
+
 
   names(resultss) <- c(
     "MDef",
@@ -452,6 +451,7 @@ SpatialDeformationMCMC <- function(
     "Mvarphi",
     "bd"
   )
+
 
   return(resultss)
 }

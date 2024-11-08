@@ -7,6 +7,7 @@
 #' @importFrom stats dbeta
 #' @importFrom stats dgamma
 #' @importFrom stats dist
+#' @importFrom stats quantile
 #' @importFrom stats rbeta
 #' @importFrom stats rgamma
 #' @importFrom stats rnorm
