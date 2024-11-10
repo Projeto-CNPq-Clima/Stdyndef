@@ -3,7 +3,7 @@
 export(DIC)
 export(SpatialDeformationMCMC)
 export(compute_Mmd)
-export(spatial_interpolation)
+export(spatio_temporal_interpolation)
 export(summary_stdyndef)
 importFrom(MASS,mvrnorm)
 importFrom(mvtnorm,dmvnorm)
