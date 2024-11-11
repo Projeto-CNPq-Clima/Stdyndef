@@ -17,3 +17,6 @@ Imports:
     mvtnorm,
     stats,
     utils
+Depends: 
+    R (>= 2.10)
+LazyData: true

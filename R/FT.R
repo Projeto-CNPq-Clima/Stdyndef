@@ -1,0 +1,30 @@
+#' Covariate Matrix for State-Space Model at Time t = 1
+#'
+#' The `FT` matrix provides the covariates used in the state-space model specifically at time `t = 1`.
+#' This matrix is essential for the initial spatiotemporal analysis, representing the influence of
+#' various predictors on the state of the system at each observation location.
+#'
+#' @format A matrix with `p` rows and `n` columns:
+#' \describe{
+#'   \item{p}{Number of covariates or predictors in the model.}
+#'   \item{n}{Number of spatial locations being observed.}
+#' }
+#'
+#' @details
+#' The `FT` matrix is a time-dependent covariate matrix used in the state-space model to capture the
+#' relationship between the observed data and the underlying state variables specifically at time `t = 1`.
+#' Each row corresponds to a specific covariate, while each column corresponds to a location in space.
+#' This structure allows for the integration of multiple predictors in the spatiotemporal modeling process.
+#'
+#' @examples
+#' # Load the FT matrix
+#' data(FT)
+#'
+#' # Display the structure of FT
+#' str(FT)
+#'
+#' # Plot the first covariate across all locations
+#' plot(FT[1, ], type = "l", main = "First Covariate Across Locations at t = 1",
+#'      xlab = "Location Index", ylab = "Covariate Value")
+#'
+"FT"
