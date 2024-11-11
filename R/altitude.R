@@ -7,7 +7,7 @@
 #' @format A numeric vector with 30 elements:
 #' \describe{
 #'   \item{altitude}{Altitude of each monitoring site in meters above sea level.}
-#' }
+#' }s
 #'
 #' @details
 #' The `altitude` variable indicates the elevation of each of the 30 monitoring stations used for collecting
@@ -25,6 +25,6 @@
 #'
 #' # Plot altitude distribution
 #' hist(altitude, main = "Distribution of Altitudes for Monitoring Sites",
-#'      xlab = "altitude (meters)", ylab = "Frequency")
+#'      xlab = "Altitude (meters)", ylab = "Frequency")
 #'
 "altitude"

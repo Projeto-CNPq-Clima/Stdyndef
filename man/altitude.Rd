@@ -8,7 +8,7 @@
 A numeric vector with 30 elements:
 \describe{
 \item{altitude}{Altitude of each monitoring site in meters above sea level.}
-}
+}s
 }
 \source{
 \url{https://portal.inmet.gov.br/}
@@ -35,7 +35,7 @@ summary(altitude)
 
 # Plot altitude distribution
 hist(altitude, main = "Distribution of Altitudes for Monitoring Sites",
-     xlab = "altitude (meters)", ylab = "Frequency")
+     xlab = "Altitude (meters)", ylab = "Frequency")
 
 }
 \keyword{datasets}
