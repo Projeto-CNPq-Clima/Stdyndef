@@ -13,9 +13,10 @@
 #'   * `Psi ~ Inverse-Wishart(S0, n0)`, with defaults `S0 = diag(0.01)` and `n0 = 1`.
 #'   * `sigma_{k}^2 | pi_{k} ~ Inv-Gamma(axi + bxi, bepsilon / (1 - pi_k) + aepsilon / pi_k)`, with defaults `aepsilon = bepsilon = axi = bxi = 0.001`.
 #'   * `phi ~ Inv-Gamma(aaphi, bbphi)`, with defaults `aaphi = bbphi = 0.001`.
-#' @param iteration a value
-#' @param burnin a value
-#' @param jump a value
+#' @param iteration Integer specifying the total number of MCMC iterations to run.
+#' @param burnin Integer specifying the number of initial iterations to discard (burn-in period).
+#' @param jump Integer specifying the interval between samples to save, used to thin the MCMC samples.
+#'
 #'
 #' @return A list containing the following adjusted parameters from the MCMC fitting procedure:
 #'
@@ -37,12 +38,29 @@
 #' @details This function performs MCMC sampling to fit a nonstationary spatiotemporal model with dynamic deformation, allowing for complex covariance structures in spatiotemporal data.
 #'
 #' @examples
-#' # Example usage:
-#' # Model fitting with simulated data
-#' # result <- SpatialDeformationMCMC(Response, FT, MatFFT, GT, Sites, GAMA, prior)
+#' # Load required libraries and datasets
+#' library(Stdyndef)
+#' data(temperature)
+#' data(FT)
+#' data(MatFFT)
+#' data(GT)
+#' data(sites)
+#' data(GAMA)
+#'
+#' # Fit the spatiotemporal model using MCMC
+#' Mod <- SpatialDeformationMCMC(
+#'   response = temperature,
+#'   FT = FT,
+#'   MatFFT = MatFFT,
+#'   GT = GT,
+#'   sites = sites,
+#'   GAMA = GAMA,
+#'   iteration = 100,
+#'   burnin = 50,
+#'   jump = 1
+#' )
+#'
 #' @export
-
-
 
 
 

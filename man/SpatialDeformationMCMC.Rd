@@ -41,11 +41,11 @@ SpatialDeformationMCMC(
 \item \code{phi ~ Inv-Gamma(aaphi, bbphi)}, with defaults \code{aaphi = bbphi = 0.001}.
 }}
 
-\item{iteration}{a value}
+\item{iteration}{Integer specifying the total number of MCMC iterations to run.}
 
-\item{burnin}{a value}
+\item{burnin}{Integer specifying the number of initial iterations to discard (burn-in period).}
 
-\item{jump}{a value}
+\item{jump}{Integer specifying the interval between samples to save, used to thin the MCMC samples.}
 }
 \value{
 A list containing the following adjusted parameters from the MCMC fitting procedure:
@@ -72,7 +72,26 @@ A list containing the following adjusted parameters from the MCMC fitting proced
 This function performs MCMC sampling to fit a nonstationary spatiotemporal model with dynamic deformation, allowing for complex covariance structures in spatiotemporal data.
 }
 \examples{
-# Example usage:
-# Model fitting with simulated data
-# result <- SpatialDeformationMCMC(Response, FT, MatFFT, GT, Sites, GAMA, prior)
+# Load required libraries and datasets
+library(Stdyndef)
+data(temperature)
+data(FT)
+data(MatFFT)
+data(GT)
+data(sites)
+data(GAMA)
+
+# Fit the spatiotemporal model using MCMC
+Mod <- SpatialDeformationMCMC(
+  response = temperature,
+  FT = FT,
+  MatFFT = MatFFT,
+  GT = GT,
+  sites = sites,
+  GAMA = GAMA,
+  iteration = 100,
+  burnin = 50,
+  jump = 1
+)
+
 }
