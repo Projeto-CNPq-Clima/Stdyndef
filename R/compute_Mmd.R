@@ -20,6 +20,7 @@
 #' @examples
 #' # Load necessary data and libraries
 #' library(Stdyndef)
+#' library(MASS)
 #' data(temperature)
 #' data(FT)
 #' data(MatFFT)

@@ -35,6 +35,7 @@ resolution. The \code{Map} outline is returned alongside these estimates for geo
 \examples{
 # Load necessary data and libraries
 library(Stdyndef)
+library(MASS)
 data(temperature)
 data(FT)
 data(MatFFT)

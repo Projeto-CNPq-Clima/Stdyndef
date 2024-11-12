@@ -33,6 +33,7 @@
 #'   \item{MkappaT1}{A binary matrix of dimensions `((iteration-burnin)/jump) x q` indicating acceptance (1) or rejection (0) of the proposals for `kappa` parameters in the Metropolis-Hastings step.}
 #'   \item{MPhiT1}{A binary matrix of dimensions `((iteration-burnin)/jump) x q` indicating acceptance (1) or rejection (0) of the proposals for `phi` parameters in the Metropolis-Hastings step.}
 #'   \item{Mvarphi}{A vector of posterior samples for the `varphi` parameter obtained during the MCMC procedure.}
+#'   \item{bd}{A value bd.}
 #' }
 #'
 #' @details This function performs MCMC sampling to fit a nonstationary spatiotemporal model with dynamic deformation, allowing for complex covariance structures in spatiotemporal data.
@@ -40,6 +41,7 @@
 #' @examples
 #' # Load required libraries and datasets
 #' library(Stdyndef)
+#' library(MASS)
 #' data(temperature)
 #' data(FT)
 #' data(MatFFT)

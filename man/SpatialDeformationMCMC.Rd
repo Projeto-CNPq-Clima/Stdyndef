@@ -63,6 +63,7 @@ A list containing the following adjusted parameters from the MCMC fitting proced
 \item{MkappaT1}{A binary matrix of dimensions \verb{((iteration-burnin)/jump) x q} indicating acceptance (1) or rejection (0) of the proposals for \code{kappa} parameters in the Metropolis-Hastings step.}
 \item{MPhiT1}{A binary matrix of dimensions \verb{((iteration-burnin)/jump) x q} indicating acceptance (1) or rejection (0) of the proposals for \code{phi} parameters in the Metropolis-Hastings step.}
 \item{Mvarphi}{A vector of posterior samples for the \code{varphi} parameter obtained during the MCMC procedure.}
+\item{bd}{A value bd.}
 }
 }
 \description{
@@ -74,6 +75,7 @@ This function performs MCMC sampling to fit a nonstationary spatiotemporal model
 \examples{
 # Load required libraries and datasets
 library(Stdyndef)
+library(MASS)
 data(temperature)
 data(FT)
 data(MatFFT)
