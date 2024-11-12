@@ -19,11 +19,64 @@ DIC(output, response, FT, MatFFT, GT, sites, GAMA)
 
 \item{sites}{A matrix \code{nx2} containing the geographic coordinates of the locations.}
 
-\item{GAMA}{A matrix with dimensions \code{qxr} such that \code{q * r = T}. Each row contains the positions of the set \verb{AT = \{1, ..., T\}}, defining the subset \code{GAMA_i = AT[GAMA[i,]]} for \verb{i = 1, ..., q}. The \code{GAMA} matrix must guarantee a partition of \code{AT}, meaning that \verb{GAMA_i ∩ GAMA_j} is empty for all \verb{i ≠ j}, and the union of all \code{GAMA_i} equals \code{AT}.}
+\item{GAMA}{A matrix with dimensions \code{qxr} such that \code{q * r = T}. Each row contains the positions of the set \verb{AT = \{1, ..., T\}}, defining the subset \code{GAMA_i = AT[GAMA[i,]]} for \verb{i = 1, ..., q}. The \code{GAMA} matrix must guarantee a partition of \code{AT}, meaning that \verb{GAMA_i ∩ GAMA_j} is empty for all \verb{i ≠ j}, and the union of all \code{GAMA_i} equals \code{AT}.
+
+#' @param GAMA A matrix that defines subsets of time indices to partition the time series into \code{q} disjoint groups.}
 }
 \value{
-a value
+A list with the following elements:
+\describe{
+\item{DIC}{The Deviance Information Criterion, a measure of model fit and complexity. Lower values indicate a better balance between fit and complexity.}
+\item{Pd}{The effective number of parameters, representing the complexity of the model.}
+\item{mean_deviance}{The posterior mean deviance, reflecting the fit of the model to the observed data.}
+}
 }
 \description{
 Title
+}
+\details{
+The Deviance Information Criterion (DIC) is calculated based on the posterior samples obtained from
+the \code{SpatialDeformationMCMC} function. It balances model fit and complexity, providing a measure
+that penalizes models with higher complexity (more parameters) while favoring good fit to the data.
+The DIC is particularly useful in a Bayesian framework, allowing for model comparison and selection.
+}
+\examples{
+# Load required data and libraries
+library(Stdyndef)
+data(temperature)
+data(FT)
+data(MatFFT)
+data(GT)
+data(sites)
+data(GAMA)
+
+# Run MCMC to obtain posterior estimates
+Mod <- SpatialDeformationMCMC(
+  response = temperature,
+  FT = FT,
+  MatFFT = MatFFT,
+  GT = GT,
+  sites = sites,
+  GAMA = GAMA,
+  iteration = 100,
+  burnin = 50,
+  jump = 1
+)
+
+# Calculate DIC for the model
+dic_results <- DIC(
+  output = Mod,
+  response = temperature,
+  FT = FT,
+  MatFFT = MatFFT,
+  GT = GT,
+  sites = sites,
+  GAMA = GAMA
+)
+
+# View results
+dic_results$DIC          # Deviance Information Criterion
+dic_results$Pd           # Effective number of parameters
+dic_results$mean_deviance # Posterior mean deviance
+
 }
