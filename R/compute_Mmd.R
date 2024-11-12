@@ -56,9 +56,6 @@
 #' xydgrad <- xyd[1:121, 1:2]
 #' xydMap <- xyd[122:(121 + nrow(Map)), 1:2]
 #'
-#' # Plot the deformation grid and map outline
-#' plot(xydMap, type = "l", xlab = "Longitude", ylab = "Latitude", main = paste("Year:", year[j]), lty = 1)
-#'
 #' # Define grid lines
 #' dd <- 10
 #' lse1 <- seq(1, (dd + 1)^2, by = (dd + 1))
