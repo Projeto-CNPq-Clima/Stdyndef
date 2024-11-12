@@ -18,19 +18,66 @@
 #' resolution. The `Map` outline is returned alongside these estimates for geographic reference.
 #'
 #' @examples
-#' # Example usage of compute_Mmd
-#' MCMC_output <- SpatialDeformationMCMC(response = temperature, FT = FT, MatFFT = MatFFT, GT = GT,
-#'                                        sites = sites, GAMA = GAMA, iteration = 100, burnin = 50, jump = 1)
-#' response <- temperature
-#' sites <- sites
-#' Map <- Map
+#' # Load necessary data and libraries
+#' library(Stdyndef)
+#' data(temperature)
+#' data(FT)
+#' data(MatFFT)
+#' data(GT)
+#' data(sites)
+#' data(GAMA)
+#' data(Map)
+#'
+#' # Run MCMC to obtain posterior estimates
+#' Mod <- SpatialDeformationMCMC(
+#'   response = temperature,
+#'   FT = FT,
+#'   MatFFT = MatFFT,
+#'   GT = GT,
+#'   sites = sites,
+#'   GAMA = GAMA,
+#'   iteration = 100,
+#'   burnin = 50,
+#'   jump = 1
+#' )
+#'
+#' # Compute the posterior deformations on a 10x10 grid
+#' DDj <- compute_Mmd(Mod, temperature, sites, Map, dd = 10)
+#'
+#' # Select deformation for the first year in the series
+#' j <- 1  # (j = 1, 2, ..., 15 for each posterior estimate over time)
+#' year <- 2007:2021
+#' xd <- DDj[1:(nrow(DDj) / 2), j]
+#' yd <- DDj[(nrow(DDj) / 2 + 1):nrow(DDj), j]
+#'
+#' # Combine x and y coordinates for grid and map deformations
+#' xyd <- cbind(xd, yd)
+#' xydgrad <- xyd[1:121, 1:2]
+#' xydMap <- xyd[122:(121 + nrow(Map)), 1:2]
+#'
+#' # Plot the deformation grid and map outline
+#' plot(xydMap, type = "l", xlab = "Longitude", ylab = "Latitude", main = paste("Year:", year[j]), lty = 1)
+#'
+#' # Define grid lines
 #' dd <- 10
+#' lse1 <- seq(1, (dd + 1)^2, by = (dd + 1))
+#' lse2 <- seq((dd + 1), (dd + 1)^2, by = (dd + 1))
+#' minix <- min(xydgrad[, 1])
+#' maxix <- max(xydgrad[, 1])
+#' miniy <- min(xydgrad[, 2])
+#' maxiy <- max(xydgrad[, 2])
 #'
-#' Mmd_result <- compute_Mmd(MCMC_output, response, sites, Map, dd)
+#' # Overlay the grid lines on the deformation map
+#' for (i in 1:(dd + 1)) {
+#'   plot(xydgrad[(lse1[i]):(lse2[i]), 1:2], type = "l", lty = 2, xlab = "", ylab = "",
+#'        xlim = c(minix, maxix), ylim = c(miniy, maxiy), add = TRUE)
+#'   plot(xydgrad[seq(i, (dd + 1)^2, by = (dd + 1)), 1:2], type = "l", lty = 2, xlab = "", ylab = "",
+#'        xlim = c(minix, maxix), ylim = c(miniy, maxiy), add = TRUE)
+#' }
 #'
-#' # Plot the posterior deformations on the grid with Map outline
-#' image(matrix(Mmd_result[,1], nrow = dd + 1), main = "Posterior Deformation (q = 1)")
-#' lines(Map[,1], Map[,2], col = "red")
+#' # Finalize the plot with map outline
+#' plot(xydMap, type = "l", xlab = "", ylab = "", xlim = c(minix, maxix), ylim = c(miniy, maxiy),
+#'      main = paste("Year:", year[j]), lty = 1)
 #'
 #' @export
 compute_Mmd <- function(MCMC_output, response, sites, Map, dd) {
