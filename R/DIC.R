@@ -1,15 +1,18 @@
-#' Title
+#' Deviance Information Criterion (DIC) for Spatiotemporal Model with Dynamic Deformation
 #'
-#' @param output a value
-#' @param response A matrix of observed values for the response variable, with dimensions `Txn`, where `T` is the length of the time series and `n` is the number of locations.
-#' @param FT A covariate matrix with dimensions `pxn`, where `p` is the number of coefficients and `n` is the number of locations for time `t = 1`.
-#' @param MatFFT A covariate matrix with dimensions `Tx(pxn)`. Each row contains the vectorized elements of the `FT` matrix for each time `t`.
-#' @param GT An evolution matrix with dimensions `pxp`.
-#' @param sites A matrix `nx2` containing the geographic coordinates of the locations.
-#' @param GAMA A matrix with dimensions `qxr` such that `q * r = T`. Each row contains the positions of the set `AT = {1, ..., T}`, defining the subset `GAMA_i = AT[GAMA[i,]]` for `i = 1, ..., q`. The `GAMA` matrix must guarantee a partition of `AT`, meaning that `GAMA_i ∩ GAMA_j` is empty for all `i ≠ j`, and the union of all `GAMA_i` equals `AT`.
+#' Calculates the Deviance Information Criterion (DIC) for a spatiotemporal model with dynamic deformation
+#' and nonstationary covariance structures. The DIC is used to assess model fit while penalizing model
+#' complexity, facilitating model comparison and selection.
 #'
-#'
-#'#' @param GAMA A matrix that defines subsets of time indices to partition the time series into `q` disjoint groups.
+#' @param MCMC_output A list containing the output from the `SpatialDeformationMCMC` function, which includes
+#' the posterior samples needed to compute the deviance.
+#' @param response A matrix of observed values for the response variable across multiple time points and locations.
+#' @param FT A covariate matrix for the model at time `t = 1`.
+#' @param MatFFT A matrix containing vectorized covariate matrices for each time step, where each row represents
+#' the covariates at a given time in a vectorized form.
+#' @param GT An evolution matrix used in the state-space model.
+#' @param sites A matrix containing the geographic coordinates of the observation locations.
+#' @param GAMA A matrix that defines subsets of time indices to partition the time series into `q` disjoint groups.
 #'
 #' @return A list with the following elements:
 #' \describe{
@@ -49,7 +52,7 @@
 #'
 #' # Calculate DIC for the model
 #' dic_results <- DIC(
-#'   output = Mod,
+#'   MCMC_output = Mod,
 #'   response = temperature,
 #'   FT = FT,
 #'   MatFFT = MatFFT,
@@ -64,13 +67,13 @@
 #' dic_results$mean_deviance # Posterior mean deviance
 #'
 #' @export
-DIC <- function(output, response, FT, MatFFT, GT, sites, GAMA) {
+DIC <- function(MCMC_output, response, FT, MatFFT, GT, sites, GAMA) {
   # Extract parameters from the MCMC output
-  MTheta <- output$MTheta
-  Mkappa <- output$Mkappa
-  Msigmak <- output$Msigmak
-  MPhi <- output$MPhi
-  MDef <- output$MDef
+  MTheta <- MCMC_output$MTheta
+  Mkappa <- MCMC_output$Mkappa
+  Msigmak <- MCMC_output$Msigmak
+  MPhi <- MCMC_output$MPhi
+  MDef <- MCMC_output$MDef
 
   # Estimate parameters
   Thetaest <- matrix(apply(MTheta, 2, mean), nrow(response), ncol(MTheta) / nrow(response))

@@ -2,26 +2,26 @@
 % Please edit documentation in R/DIC.R
 \name{DIC}
 \alias{DIC}
-\title{Title}
+\title{Deviance Information Criterion (DIC) for Spatiotemporal Model with Dynamic Deformation}
 \usage{
-DIC(output, response, FT, MatFFT, GT, sites, GAMA)
+DIC(MCMC_output, response, FT, MatFFT, GT, sites, GAMA)
 }
 \arguments{
-\item{output}{a value}
+\item{MCMC_output}{A list containing the output from the \code{SpatialDeformationMCMC} function, which includes
+the posterior samples needed to compute the deviance.}
 
-\item{response}{A matrix of observed values for the response variable, with dimensions \code{Txn}, where \code{T} is the length of the time series and \code{n} is the number of locations.}
+\item{response}{A matrix of observed values for the response variable across multiple time points and locations.}
 
-\item{FT}{A covariate matrix with dimensions \code{pxn}, where \code{p} is the number of coefficients and \code{n} is the number of locations for time \code{t = 1}.}
+\item{FT}{A covariate matrix for the model at time \code{t = 1}.}
 
-\item{MatFFT}{A covariate matrix with dimensions \code{Tx(pxn)}. Each row contains the vectorized elements of the \code{FT} matrix for each time \code{t}.}
+\item{MatFFT}{A matrix containing vectorized covariate matrices for each time step, where each row represents
+the covariates at a given time in a vectorized form.}
 
-\item{GT}{An evolution matrix with dimensions \code{pxp}.}
+\item{GT}{An evolution matrix used in the state-space model.}
 
-\item{sites}{A matrix \code{nx2} containing the geographic coordinates of the locations.}
+\item{sites}{A matrix containing the geographic coordinates of the observation locations.}
 
-\item{GAMA}{A matrix with dimensions \code{qxr} such that \code{q * r = T}. Each row contains the positions of the set \verb{AT = \{1, ..., T\}}, defining the subset \code{GAMA_i = AT[GAMA[i,]]} for \verb{i = 1, ..., q}. The \code{GAMA} matrix must guarantee a partition of \code{AT}, meaning that \verb{GAMA_i ∩ GAMA_j} is empty for all \verb{i ≠ j}, and the union of all \code{GAMA_i} equals \code{AT}.
-
-#' @param GAMA A matrix that defines subsets of time indices to partition the time series into \code{q} disjoint groups.}
+\item{GAMA}{A matrix that defines subsets of time indices to partition the time series into \code{q} disjoint groups.}
 }
 \value{
 A list with the following elements:
@@ -32,7 +32,9 @@ A list with the following elements:
 }
 }
 \description{
-Title
+Calculates the Deviance Information Criterion (DIC) for a spatiotemporal model with dynamic deformation
+and nonstationary covariance structures. The DIC is used to assess model fit while penalizing model
+complexity, facilitating model comparison and selection.
 }
 \details{
 The Deviance Information Criterion (DIC) is calculated based on the posterior samples obtained from
@@ -65,7 +67,7 @@ Mod <- SpatialDeformationMCMC(
 
 # Calculate DIC for the model
 dic_results <- DIC(
-  output = Mod,
+  MCMC_output = Mod,
   response = temperature,
   FT = FT,
   MatFFT = MatFFT,
