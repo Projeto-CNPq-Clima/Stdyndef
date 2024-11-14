@@ -4,12 +4,12 @@
 \name{Stdyndef-package}
 \alias{Stdyndef}
 \alias{Stdyndef-package}
-\title{Stdyndef: What the Package Does (One Line, Title Case)}
+\title{Stdyndef: Spatiotemporal Modeling with Dynamic Deformation for Nonstationary Covariance Structures}
 \description{
-What the package does (one paragraph).
+he `Stdyndef` package implements a novel spatiotemporal modeling framework that incorporates dynamic deformation to account for changes in the spatial correlation structure over time. This approach generalizes models that use spatial deformation and is particularly suited for nonstationary covariance structures. The package is applied to 15 years of monthly average temperature data from Southern Brazil, addressing the influence of geographic diversity and meteorological phenomena on spatial correlation. Parameters are estimated using Bayesian methods with MCMC sampling.
 }
 \author{
-\strong{Maintainer}: Fidel Morales \email{fidel.ec@ufrn.br} (\href{https://orcid.org/YOUR-ORCID-ID}{ORCID})
+\strong{Maintainer}: Fidel Morales \email{fidel.castro@ufrn.br} (\href{https://orcid.org/0000-0002-7227-8023}{ORCID})
 
 }
 \keyword{internal}

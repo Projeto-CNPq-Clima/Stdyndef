@@ -18,11 +18,14 @@ knitr::opts_chunk$set(
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of Stdyndef is to ...
+# Stdyndef: Spatiotemporal Modeling with Dynamic Deformation for Nonstationary Covariance Structures
+
+The `Stdyndef` package implements a novel spatiotemporal modeling framework with dynamic deformation, allowing for nonstationary covariance structures. This innovative approach is ideal for analyzing spatiotemporal data with evolving spatial relationships, such as monthly average temperature data.
 
 ## Installation
 
-You can install the development version of Stdyndef from [GitHub](https://github.com/) with:
+
+You can install the development version of Stdyndef from [GitHub](https://github.com/Projeto-CNPq-Clima/Stdyndef) with:
 
 ``` r
 # install.packages("pak")
@@ -36,4 +39,70 @@ This is a basic example which shows you how to solve a common problem:
 ```{r example}
 #library(Stdyndef)
 ## basic example code
+# Load sample data
+data(temperature)
+data(FT)
+data(MatFFT)
+data(GT)
+data(sites)
+data(GAMA)
+data(Map)
+
+# Fit the model
+Mod <- SpatialDeformationMCMC(
+  response = temperature,
+  FT = FT,
+  MatFFT = MatFFT,
+  GT = GT,
+  sites = sites,
+  GAMA = GAMA,
+  iteration = 1000,
+  burnin = 500,
+  jump = 10
+)
+
+# Compute deformations on a 10x10 grid
+Mmd <- compute_Mmd(Mod, temperature, sites, Map, dd = 10)
+
+# Plot results for the first deformation
+x <- Mmd[1:(nrow(Mmd) / 2), 1]
+y <- Mmd[(nrow(Mmd) / 2 + 1):nrow(Mmd), 1]
+plot(x, y, type = "l", main = "Dynamic Deformation", xlab = "Longitude", ylab = "Latitude")
+
+# Calculate DIC
+dic_results <- DIC(
+  MCMC_output = Mod,
+  response = temperature,
+  FT = FT,
+  MatFFT = MatFFT,
+  GT = GT,
+  sites = sites,
+  GAMA = GAMA
+)
+
+# View results
+print(dic_results)
+
+# Example interpolation for unobserved locations
+# Generate FTNO matrix for illustration (replace with actual data)
+FTNO <- matrix(runif(30 * 10), nrow = 30, ncol = 10)
+
+# Perform spatiotemporal interpolation
+interpolated_results <- SpatialInterpolation(
+  MCMC_output = Mod,
+  response = temperature,
+  FT = FT,
+  FTNO = FTNO,
+  sites = sites,
+  Map = Map,
+  dd = 10
+)
+
+# Plot interpolation results
+image(matrix(interpolated_results[, 1], nrow = 10), main = "Interpolated Results")
+
+?SpatialDeformationMCMC
+?compute_Mmd
+?DIC
+?SpatialInterpolation
 ```

@@ -1,10 +1,16 @@
 Package: Stdyndef
-Title: What the Package Does (One Line, Title Case)
+Title: Spatiotemporal Modeling with Dynamic Deformation for Nonstationary Covariance Structures
 Version: 0.0.0.9000
 Authors@R: 
-    person("Fidel", "Morales", , "fidel.ec@ufrn.br", role = c("aut", "cre"),
-           comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: What the package does (one paragraph).
+    person("Fidel", "Morales", , "fidel.castro@ufrn.br", role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0002-7227-8023"))
+Description: he `Stdyndef` package implements a novel spatiotemporal modeling framework that
+    incorporates dynamic deformation to account for changes in the spatial correlation structure
+    over time. This approach generalizes models that use spatial deformation and is particularly
+    suited for nonstationary covariance structures. The package is applied to 15 years of monthly
+    average temperature data from Southern Brazil, addressing the influence of geographic diversity
+    and meteorological phenomena on spatial correlation. Parameters are estimated using Bayesian
+    methods with MCMC sampling.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
