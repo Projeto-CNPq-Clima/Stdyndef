@@ -180,13 +180,13 @@ dic_results <- DIC(
 # View results
 print(dic_results)
 #> $DIC
-#> [1] 9735.573
+#> [1] 9719.388
 #> 
 #> $pD
-#> [1] 611.282
+#> [1] 615.7438
 #> 
 #> $DDpost
-#> [1] 8513.009
+#> [1] 8487.9
 
 
 ?SpatialDeformationMCMC

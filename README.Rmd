@@ -27,7 +27,7 @@ The `Stdyndef` package implements a novel spatiotemporal modeling framework with
 
 You can install the development version of Stdyndef from [GitHub](https://github.com/Projeto-CNPq-Clima/Stdyndef) with:
 
-``` r
+```r
 # install.packages("pak")
 pak::pak("Projeto-CNPq-Clima/Stdyndef")
 ```
@@ -37,7 +37,7 @@ pak::pak("Projeto-CNPq-Clima/Stdyndef")
 This is a basic example which shows you how to solve a common problem:
 
 ```{r example}
-#library(Stdyndef)
+library(Stdyndef)
 ## basic example code
 # Load sample data
 data(temperature)
@@ -56,9 +56,9 @@ Mod <- SpatialDeformationMCMC(
   GT = GT,
   sites = sites,
   GAMA = GAMA,
-  iteration = 1000,
-  burnin = 500,
-  jump = 10
+  iteration = 100,
+  burnin = 50,
+  jump = 2
 )
 
 # Compute deformations on a 10x10 grid
@@ -83,26 +83,9 @@ dic_results <- DIC(
 # View results
 print(dic_results)
 
-# Example interpolation for unobserved locations
-# Generate FTNO matrix for illustration (replace with actual data)
-FTNO <- matrix(runif(30 * 10), nrow = 30, ncol = 10)
-
-# Perform spatiotemporal interpolation
-interpolated_results <- SpatialInterpolation(
-  MCMC_output = Mod,
-  response = temperature,
-  FT = FT,
-  FTNO = FTNO,
-  sites = sites,
-  Map = Map,
-  dd = 10
-)
-
-# Plot interpolation results
-image(matrix(interpolated_results[, 1], nrow = 10), main = "Interpolated Results")
 
 ?SpatialDeformationMCMC
 ?compute_Mmd
 ?DIC
-?SpatialInterpolation
 ```
+
