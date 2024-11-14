@@ -2,6 +2,7 @@
 "_PACKAGE"
 
 ## usethis namespace: start
+#' @importFrom animation saveGIF
 #' @importFrom MASS mvrnorm
 #' @importFrom mvtnorm dmvnorm
 #' @importFrom stats dbeta

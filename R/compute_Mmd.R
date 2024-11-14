@@ -67,15 +67,12 @@
 #'
 #' # Overlay the grid lines on the deformation map
 #' for (i in 1:(dd + 1)) {
-#'   plot(xydgrad[(lse1[i]):(lse2[i]), 1:2], type = "l", lty = 2, xlab = "", ylab = "",
-#'        xlim = c(minix, maxix), ylim = c(miniy, maxiy), add = TRUE)
-#'   plot(xydgrad[seq(i, (dd + 1)^2, by = (dd + 1)), 1:2], type = "l", lty = 2, xlab = "", ylab = "",
-#'        xlim = c(minix, maxix), ylim = c(miniy, maxiy), add = TRUE)
+#'    plot(xydgrad[(lse1[i]):(lse2[i]),1:2],type="l",lty=2,xlab=" ",ylab=" ",xlim=c(minix,maxix),ylim=c(miniy,maxiy))
+#'    plot(xydgrad[seq(i,(dd+1)^2,by=(dd+1)),1:2],type="l",lty=2,xlab=" ",ylab=" ",xlim=c(minix,maxix),ylim=c(miniy,maxiy))
 #' }
 #'
 #' # Finalize the plot with map outline
-#' plot(xydMap, type = "l", xlab = "", ylab = "", xlim = c(minix, maxix), ylim = c(miniy, maxiy),
-#'      main = paste("Year:", year[j]), lty = 1)
+#' plot(xydMap,type="l",lty=1,xlab=" ",ylab=" ",xlim=c(minix,maxix),ylim=c(miniy,maxiy),main=year[j],cex.main=4)
 #'
 #' @export
 compute_Mmd <- function(MCMC_output, response, sites, Map, dd) {
